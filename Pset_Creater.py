@@ -45,22 +45,23 @@ sets= ifcfile.by_type("IfcPropertySet")
 list = []
 for sett in sets:
     list.append(sett.Name)
-print (list)
+#print (list)
 myset = set(list)
-print (myset)
+#print (myset)
 
 
 
 # Properties
 def create_pset():
     file = "Parameter_template.txt"
+    global antall_linjer
     antall_linjer = 0
     global index
     index = 0
     #åpner fil
-    with open(file, "r") as f:
+    with open(file, "r+") as f:
         data = f.readlines()
-
+    print (data)
     #teller antall linjer i txt
     for parametere in data:
         antall_linjer += len(parametere[0])
@@ -71,22 +72,37 @@ def create_pset():
 
     if "Pset_KS" not in myset:
         print("Pset lages")
-        #
+
         property_values = []
-        while index < antall_linjer:
-            property_values.append(ifcfile.createIfcPropertySingleValue(data[index], data[index],ifcfile.create_entity("IfcBoolean", False),None),)
-            index += 1
+
+        print(property_values)
+        antall_properties = len(property_values)
+        print (antall_properties)
         for space in spaces:
+            while index < antall_linjer:
+                property_values.append(ifcfile.createIfcPropertySingleValue(data[index][:-1], data[index][:-1],
+                                                                            ifcfile.create_entity("IfcBoolean", False),
+                                                                            None), )
+
+                index += 1
+            #print(space.Name)
             property_set = ifcfile.createIfcPropertySet(create_guid(), owner_history, "Pset_KS", str(space.Name), property_values)
             ifcfile.createIfcRelDefinesByProperties(create_guid(), owner_history, None, None, [space], property_set)
-            global fil
+            #print (index)
+            #print (antall_linjer)
             ifcfile.write(fil)
+
+            property_values =[]
+            index = 0
+            fil
+
+            #print (fil)
 
 
     else:
         print("Pset finnes")
         sg.PopupError("Pset er allerede oprettet i modell.")
-    ferdig_gui()
+
 
 def ferdig_gui():
     layout = [[sg.Text("Pset_KS ferdig.\nStart IFC_KS programmet?",justification='center')],
@@ -102,4 +118,7 @@ def ferdig_gui():
             sys.exit("Program lukkes")
 
 create_pset()
+ferdig_gui()
 
+#180=IFCPROPERTYSINGLEVALUE('MAL fug',$,IFCBOOLEAN(.F.),$);
+#5621=IFCPROPERTYSINGLEVALUE('Elektriker sterkstrom\X4\0000000A\X0\','Elektriker sterkstrom\X4\0000000A\X0\',IFCBOOLEAN(.F.),$);
