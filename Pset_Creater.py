@@ -68,8 +68,6 @@ def create_pset():
 
 
 
-
-
     if "Pset_KS" not in myset:
         print("Pset lages")
 
@@ -81,7 +79,7 @@ def create_pset():
         for space in spaces:
             while index < antall_linjer:
                 property_values.append(ifcfile.createIfcPropertySingleValue(data[index][:-1], data[index][:-1],
-                                                                            ifcfile.create_entity("IfcBoolean", False),
+                                                                            ifcfile.create_entity("IfcText", "Ikke klart"),
                                                                             None), )
 
                 index += 1
@@ -118,7 +116,7 @@ def ferdig_gui():
             sys.exit("Program lukkes")
 
 create_pset()
-ferdig_gui()
+#ferdig_gui()
 
 #180=IFCPROPERTYSINGLEVALUE('MAL fug',$,IFCBOOLEAN(.F.),$);
 #5621=IFCPROPERTYSINGLEVALUE('Elektriker sterkstrom\X4\0000000A\X0\','Elektriker sterkstrom\X4\0000000A\X0\',IFCBOOLEAN(.F.),$);

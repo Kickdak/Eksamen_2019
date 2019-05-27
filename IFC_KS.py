@@ -66,7 +66,7 @@ def ifcOrganizer ():
     print(romliste)
     #print(room.Name +' - '+room.LongName)print(job.__getitem__(0))
     #UI starter
-    layout = [[sg.Text('Rom nummer: ', size=(10, 1)),sg.InputCombo(romliste),sg.Text('Property Value: -->', size=(14, 1)),sg.InputCombo(mylist),sg.Checkbox('Utført'),sg.Submit("Kjør"), sg.Cancel("Exit")]]
+    layout = [[sg.Text('Rom nummer: ', size=(10, 1)),sg.InputCombo(romliste),sg.Text('Property Value: -->', size=(14, 1)),sg.InputCombo(mylist),sg.Checkbox('Utført'),sg.Checkbox('Avvik'),sg.Submit("Kjør"), sg.Cancel("Exit")]]
     window = sg.Window('IFC Property Updater')
 
     #Loop for programmet og knapper
@@ -75,6 +75,15 @@ def ifcOrganizer ():
         if event in (None, 'Exit'):
             sys.exit("aa! errors!")
         if event == 'Kjør':
+            if values[2] == False and values[3] == False:
+                values[2] = "Ikke klart med Avvik"
+            if values[2] == True and values[3] == True:
+                values[2] = "Ferdig med Avvik"
+            if values[2] == False:
+                values[2] = "Ikke klart"
+            if values[2] == True:
+                values[2] = "Ferdig"
+
             oppdater_job(values[1], values[0], values[2], ifcfile, sets, fil)
 
 
