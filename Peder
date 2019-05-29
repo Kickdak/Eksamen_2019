@@ -1,0 +1,48 @@
+import ifcopenshell
+import PySimpleGUI as sg
+
+file = ifcopenshell.open("D:/Kattem_test2.ifc")
+
+mylist = file.by_type("IfcBuildingElement")
+
+lista = []
+ibe = []
+ww = []
+
+for element in mylist:
+    lista.append(element.is_a())
+
+myset = set(lista)
+
+for tut in myset:
+    ibe.append(tut)
+
+
+
+layout = [[sg.Text('BuildingElement: ', size=(10, 1)),sg.InputCombo(ibe),sg.Text('ReName', size=(14, 1)),sg.InputText(),sg.Submit("Go"), sg.Cancel("Exit")]]
+buildingElement = sg.Window('IFC Property Updater').Layout(layout)
+
+#Loop for programmet og knapper
+while True:  # Event Loop<
+    event, values = buildingElement.Read()
+    if event in (None, 'Exit'):
+        print("Skriptet ble stoppet")
+        sys.exit()
+    if event == "Go":
+        break
+
+
+dropdown_name = values[0]
+input_name = values[1]
+
+buildingElements = file.by_type(dropdown_name)
+
+for buildingElement in buildingElements:
+    ibe.append(buildingElement.Name)
+
+x = 1
+for buildingElement in buildingElements:
+    buildingElement.Name = input_name+" "+(str(x).zfill(3))
+    x = x+1
+
+file.write(file)
